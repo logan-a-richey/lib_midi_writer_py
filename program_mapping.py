@@ -2,14 +2,16 @@
 
 class ProgramMapping:
     """ 
-    @ brief     Helpful encapsulated mappings for program to instrument.
-    @ detail    while using MidiWriter.setChannel(int channel, int program)
+    @brief     Helpful encapsulated mappings for program to instrument.
+    @detail    While using MidiWriter.setChannel(int channel, int program)
     
-    @ usage
+    @usage
+    ```
     from midi_writer import MidiWriter
     myMidi = MidiWriter()
     inst_id = ProgramMapping.NAME_TO_NUMBER.get("rock_organ", 0) # should return 18 from "rock_organ"
     myMidi.setChannel(channel=0, inst_id)
+    ```
     """
     
     NAME_TO_NUMBER = {

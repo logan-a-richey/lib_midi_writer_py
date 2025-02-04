@@ -1,6 +1,19 @@
 #!/usr/bin/python3
 
 class DrumMapping:
+    """
+    @brief      Helpful encapsulated mapping for drum name to midi drum pitch
+    @detail     While using MidiWriter.addNote()
+    
+    @usage
+    ```
+    from midi_writer import MidiWriter
+    myMidi = MidiWriter()
+    snare_pitch = DrumMapping.NAME_TO_NUMBER.get("snare_drum_1", 32)
+    myMidi.addNote(track=0, channel=9, start=0, duration=480, pitch=snare_pitch, velocity=120)
+    ```
+    """
+
     NAME_TO_NUMBER = {
         # TODO "pretty-fy the key-value spacing
         "laser" : 27,
