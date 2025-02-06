@@ -1,9 +1,11 @@
 #!/usr/bin/python3
+# drum_mapping.py
 
 class DrumMapping:
     """
     @brief      Helpful encapsulated mapping for drum name to midi drum pitch
     @detail     While using MidiWriter.addNote()
+                contains class variable NAME_TO_NUMBER (dict)
     
     @usage
     ```
