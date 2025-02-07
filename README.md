@@ -45,7 +45,7 @@ def main():
     myMidi = MidiWriter()
 
     # Create tempo event
-    myMidi.addBPM(start=0, bpm=MidiTest.DEFAULT_BPM)
+    myMidi.addBPM(start=0, bpm=120)
 
     # Specify track-channel mapping (alternate channels)
     myMidi.setChannel(channel=0, program=0)  # Acoustic Grand Piano
@@ -55,10 +55,12 @@ def main():
     TPQ = 480
 
     # Each note goes into a separate track
-    myMidi.addNote(track=0, channel=0, start=0 * TPQ, duration=1 * TPQ, pitch=60)
-    myMidi.addNote(track=1, channel=1, start=1 * TPQ, duration=1 * TPQ, pitch=62)
-    myMidi.addNote(track=2, channel=0, start=2 * TPQ, duration=1 * TPQ, pitch=64)
-    myMidi.addNote(track=3, channel=1, start=3 * TPQ, duration=1 * TPQ, pitch=65)
+    # addNote params: track, channel, start, duration, pitch, velocity
+    # alternate channels so Musescore will not combine staves:
+    myMidi.addNote(track=0, channel=0, start=0 * TPQ, duration=1 * TPQ, pitch=60, velocity=120)
+    myMidi.addNote(track=1, channel=1, start=1 * TPQ, duration=1 * TPQ, pitch=62, velocity=120)
+    myMidi.addNote(track=2, channel=0, start=2 * TPQ, duration=1 * TPQ, pitch=64, velocity=120)
+    myMidi.addNote(track=3, channel=1, start=3 * TPQ, duration=1 * TPQ, pitch=65, velocity=120)
 
     # Write out MIDI object
     output_filename: str = "test_multiple_tracks.mid"
