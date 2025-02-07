@@ -23,6 +23,8 @@ Simply import the `MidiWriter` class with your Python project:
 ## Usage"
 ### 1. Creating a MIDI file:
 ```python
+# Simple test to write 4 quarter notes across 4 staves:
+
 from midi_writer import MidiWriter
 
 def main():
