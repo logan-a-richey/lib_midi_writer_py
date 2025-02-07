@@ -8,12 +8,26 @@ class ProgramMapping:
     @usage
     ```
     from midi_writer import MidiWriter
-    myMidi = MidiWriter()
+    myMidi = MidiWriter(
     inst_id = ProgramMapping.NAME_TO_NUMBER.get("rock_organ", 0) # should return 18 from "rock_organ"
     myMidi.setChannel(channel=0, inst_id)
     ```
     """
     
+    '''
+    # possible class lookup for numbers
+    class Piano: 
+        # class variables to easy lookup in an IDE:
+        acoustic_grand_piano    = 0, 
+        bright_acoustic_piano   = 1, 
+        electric_grand_piano    = 2, 
+        honky-tonk_piano        = 3, 
+        rhodes_piano            = 4, 
+        chorused_piano          = 5, 
+        harpsichord             = 6, 
+        clavinet                = 7, 
+    '''
+
     NAME_TO_NUMBER = {
         # Category: Piano
         "acoustic_grand_piano"    : 0, 
