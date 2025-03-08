@@ -23,12 +23,18 @@ class MidiWriter:
       - 60 ticks  = thirty-second note, etc.
     
     @publicmethods:
-        addTrack() -> int
-        setChannel(int channel = 0, int program = 0)
-        addBPM(int track = 0, int start = 0, int bpm = 120)
-        addNote(int track = 0, int channel = 0, int start = 0, int duration = 480,
-                int pitch = 60, int velocity = 120)
-        save(str output_filename)
+    - addTrack() -> int
+    - setChannel(int channel = 0, int program = 0)
+    - addBPM(int track = 0, int start = 0, int bpm = 120)
+    - addNote(
+        int track = 0,
+        int channel = 0, 
+        int start = 0,
+        int duration = 480,
+        int pitch = 60,
+        int velocity = 120
+      )
+    - save(str output_filename)
     """
     
     class Track:
@@ -225,7 +231,7 @@ class MidiWriter:
         note_off = bytes([0x80 | (channel & 0x0F), pitch & 0x7F, 0])
         trk.add_event(end_tick, note_off)
     
-    def save(self, output_filename):
+    def save(self, output_filename="output.mid"):
         """
         @brief  Write the MIDI file to disk.
         
