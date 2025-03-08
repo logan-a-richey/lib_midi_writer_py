@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # lib_midi_writer-py
 Lightweight Python module to create MIDI files.
 =======
@@ -133,5 +132,3 @@ This project is open-source and available under the MIT License.
 - I designed this MidiWriter to be more lightweight than other APIs. There are many features I wish to add going forward.
 - Feel free to offer suggestions and feedback!
 - If you wish to contribute, please fork the repo and submit a pull request, and I can consider any changes.
-
->>>>>>> fe2967a (updated python readme)
