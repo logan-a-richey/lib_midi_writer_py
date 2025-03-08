@@ -1,7 +1,5 @@
-# lib_midi_writer-py
-Lightweight Python module to create MIDI files.
-=======
-# README: MidiWriter (Python)
+# lib_midi_writer-py (README)
+- Lightweight Python module to create MIDI files.
 
 ## Overview
 - `MidiWriter` is a lightweight Python class designed to generate and save MIDI files.
@@ -19,7 +17,7 @@ Lightweight Python module to create MIDI files.
 Simply import the `MidiWriter` class with your Python project:
 `from midi_writer import MidiWriter`
 
-## Usage"
+## Usage
 ### 1. Creating a MIDI file:
 ```python
 # Simple test to write 4 quarter notes across 4 staves:
