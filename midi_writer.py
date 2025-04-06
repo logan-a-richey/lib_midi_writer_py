@@ -230,7 +230,44 @@ class MidiWriter:
         # Note off event: status byte 0x80 + channel, note number, velocity 0.
         note_off = bytes([0x80 | (channel & 0x0F), pitch & 0x7F, 0])
         trk.add_event(end_tick, note_off)
-    
+   
+    def addTimeSignature(self, track=0, start=0, numerator=4, denominator=4):
+        """
+        @brief  Add a time signature meta event at a given tick.
+
+        @param  track (int): Track index where the event is added. Default is 0.
+        @param  start (int): Time in MIDI ticks.
+        @param  numerator (int): Beats per measure (e.g., 3 for 3/4).
+        @param  denominator (int): Note value that gets the beat (must be a power of 2: 1, 2, 4, 8...).
+
+        Example: 3/4 time would be numerator=3, denominator=4.
+        """
+        try:
+            if track < 0 or start < 0:
+                raise ValueError("Track and start must be non-negative.")
+            if numerator <= 0:
+                raise ValueError("Numerator must be > 0.")
+            if denominator not in [1, 2, 4, 8, 16, 32, 64]:
+                raise ValueError("Denominator must be a power of 2 (e.g., 1, 2, 4, 8, ...).")
+        except Exception as e:
+            print("[W] Could not add time signature. Error = {}".format(e))
+            return
+
+        # Calculate dd: denominator exponent (e.g., 4 -> 2 because 2^2 = 4)
+        dd = 0
+        denom = denominator
+        while denom > 1:
+            denom >>= 1
+            dd += 1
+
+        cc = 24  # Default MIDI ticks per metronome click
+        bb = 8   # Default number of 32nd notes per MIDI quarter note
+
+        event_bytes = bytes([0xFF, 0x58, 0x04, numerator, dd, cc, bb])
+
+        trk = self._get_track(track)
+        trk.add_event(start, event_bytes)
+
     def save(self, output_filename="output.mid"):
         """
         @brief  Write the MIDI file to disk.
@@ -282,67 +319,36 @@ class MidiWriter:
 # Test functions and main() for demonstration purposes.
 ################################################################################
 
+def test_simple():
+    """
+    @brief  Generate a simple quarter-note scale MIDI file.
+    """
+    TPQ = 480
+
+    myMidi = MidiWriter() # Create a new MIDI object.
+    myMidi.addBPM(track=0, start=0, bpm=120) # Set initial tempo.
+    myMidi.addTimeSignature(track=0, start=0, numerator=3, denominator=8)
+    myMidi.setChannel(channel=0, program=0) # Set channel 0 to Acoustic Grand Piano.
+    
+    # Define a scale (C major scale)
+    notes = [60, 62, 64, 65, 67, 69, 71, 72]
+    for beat, note in enumerate(notes):
+        myMidi.addNote(
+            track=0,
+            channel=0,
+            start=beat * TPQ,
+            duration=TPQ,
+            pitch=note,
+            velocity=120
+        )
+    
+    
+    output = "test_scale.mid"
+    myMidi.save(output)
+    print("Successfully created \"{}\".".format(output))
+
 def main():
-    TPQ = 480  # TICKS_PER_QUARTER
-    
-    def test_simple():
-        """
-        @brief  Generate a simple quarter-note scale MIDI file.
-        """
-        
-        myMidi = MidiWriter() # Create a new MIDI object.
-        myMidi.addBPM(track=0, start=0, bpm=120) # Set initial tempo.
-        myMidi.setChannel(channel=0, program=0) # Set channel 0 to Acoustic Grand Piano.
-        
-        # Define a scale (C major scale)
-        notes = [60, 62, 64, 65, 67, 69, 71, 72]
-        for beat, note in enumerate(notes):
-            myMidi.addNote(
-                track=0,
-                channel=0,
-                start=beat * TPQ,
-                duration=TPQ,
-                pitch=note,
-                velocity=120
-            )
-        
-        output = "test_scale.mid"
-        myMidi.save(output)
-        print("Successfully created \"{}\".".format(output))
-    
-    def test_6lets():
-        """
-        @brief  Generate a MIDI file with sextuplet (6-tuplet) notes.
-        
-        Note: Some programs (e.g. MuseScore) may have difficulty automatically 
-        quantizing tuplets. The MIDI data is correct, but you may need to adjust 
-        the quantization and tuplet settings in your score editor.
-        """
-        myMidi = MidiWriter() # Create a new MIDI object.
-        myMidi.addBPM(track=0, start=0, bpm=120) # Set initial tempo.
-        myMidi.setChannel(channel=0, program=0) # Set channel 0 to Acoustic Grand Piano.
-        
-        # SIXLET_TICKS: Duration of one sextuplet note within a quarter note.
-        SIXLET_TICKS = TPQ / 6  
-        for beat in range(24):
-            myMidi.addNote(
-                track=0,
-                channel=0,
-                start=int(beat * SIXLET_TICKS),
-                duration=int(SIXLET_TICKS),
-                pitch=60 + beat,
-                velocity=100
-            )
-        
-        output = "test_midi_writer_sextuplets.mid"
-        myMidi.save(output)
-        print("Successfully created \"{}\".".format(output))
-    
-    print("*" * 80)
     test_simple()
-    test_6lets()
-    print("*" * 80)
-    print("Successfully ran all tests in this file!")
 
 if __name__ == "__main__":
     main()
